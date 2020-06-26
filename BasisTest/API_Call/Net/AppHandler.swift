@@ -1,9 +1,9 @@
 //
 //  AppHandler.swift
-//  Cricuru
+//  BasisTest
 //
-//  Created by Upasana sharma  on 03/04/20.
-//  Copyright © 2020 Upasana sharma . All rights reserved.
+//  Created by Hitendra Dubey  on 26/06/20.
+//  Copyright © 2020 Hitendra Dubey . All rights reserved.
 //
 
 import Foundation
