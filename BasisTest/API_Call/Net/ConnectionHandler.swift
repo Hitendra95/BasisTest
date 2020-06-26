@@ -17,22 +17,31 @@ class ConnectionHandler{
     func isConnectedToNetwork() -> Bool {
             
         var isReachable = false
-        let reachability = Reachability()
-        if reachability.isReachable(){
-            print("Reachable via WiFi or cellular")
-            isReachable = true
+        do
+        {
+           let reachability = try Reachability()
+           if reachability.connection == .wifi || reachability.connection == .cellular{
+               print("Reachable via WiFi or cellular")
+               isReachable = true
+           }
+        }
+        catch
+        {
+            
         }
         return isReachable
     }
     
     func makeHttpRequest(url: String, reqtype: HTTPMethod,handler:AppHandler, retrycount:Int){
         if retrycount > 0{
-            AF.request(url, method: reqtype) .responseJSON {
+            AF.request(url, method: reqtype).responseString {
                 response in
-                print(response)
                 switch response.result {
                 case .success:
-                    if let resultDict = response.value as? Dictionary<String,AnyObject>{
+                    var data = response.value ?? ""
+                    data.remove(at: data.startIndex)
+                    print(data)
+                    if let resultDict = self.convertStringToDict(string: data){ //as? Dictionary<String,AnyObject>{//data.removeSubrange(Range(string: data, lowerBound: 0, upperBound:1)) {
                     if let statusCode = resultDict[Constants.KEY_STATUS_CODE] {
                         let statuscode = statusCode as! Int
                         if statuscode == 400 || statuscode == 404{
@@ -41,11 +50,19 @@ class ConnectionHandler{
                             handler.handleMessage(data: response.data!)
                         }
                     }else{
-                        handler.handleMessage(data: response.data!)
+                        do {
+                            let jsonData = try JSONSerialization.data(withJSONObject: resultDict, options: .prettyPrinted)
+                            // here "jsonData" is the dictionary encoded in JSON data
+                            handler.handleMessage(data: jsonData)
+                        } catch {
+                            print(error.localizedDescription)
+                        }
+                        
                     }
-                    }else if let resultDict = response.value as? Array<AnyObject>{
-                        handler.handleMessage(data: resultDict)
                     }
+//                    }else if let resultDict = response.value as? Array<AnyObject>{
+//                        handler.handleMessage(data: resultDict)
+//                    }
                     break
                 case .failure(let error):
                     print(error)
@@ -61,6 +78,22 @@ class ConnectionHandler{
         }else{
             handler.handleParseError(data: errorMessage)
         }
+    }
+    
+    private func convertStringToDict(string: String) -> Dictionary<String,AnyObject>?
+    {
+        let data = string.data(using: .utf8)!
+        do {
+            if let jsonArray = try JSONSerialization.jsonObject(with: data, options : .allowFragments) as? Dictionary<String,AnyObject>
+            {
+               return jsonArray // use the json here
+            } else {
+                print("bad json")
+            }
+        } catch let error as NSError {
+            print(error)
+        }
+        return nil
     }
     
 }

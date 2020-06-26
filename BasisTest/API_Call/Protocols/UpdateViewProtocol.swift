@@ -9,8 +9,5 @@
 import Foundation
 
 protocol UpdateViewProtocol : NSObjectProtocol {
-    func assignDelegates()
-    func applyFieldConstraints()
     func updateView(event: Int, eventtype: Int)
-    func isEqual(object: AnyObject!) -> Bool
 }

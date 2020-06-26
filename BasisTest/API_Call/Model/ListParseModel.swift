@@ -13,6 +13,7 @@ class ListParseModel{
     var list = ListModel()
 
     func parseUser(data: Data)-> ListModel{
+        print("data to parse:\(data)")
         let decoder = JSONDecoder()
         do
         {
@@ -21,6 +22,7 @@ class ListParseModel{
         }
         catch
         {
+            print(error.localizedDescription)
             return list
         }
     }

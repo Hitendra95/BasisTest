@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		BF646CC79E27EF51705B46FB /* Pods_BasisTest.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = B605549B7E3E8B462B163432 /* Pods_BasisTest.framework */; };
+		DC09F78224A6860400E5267F /* CustomView.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC09F78124A6860400E5267F /* CustomView.swift */; };
 		DC64485124A6167F00D32E98 /* EventController.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC64485024A6167F00D32E98 /* EventController.swift */; };
 		DC64485524A616A800D32E98 /* UpdateViewProtocol.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC64485424A616A800D32E98 /* UpdateViewProtocol.swift */; };
 		DC64485A24A616CF00D32E98 /* Handlers.swift in Sources */ = {isa = PBXBuildFile; fileRef = DC64485724A616CF00D32E98 /* Handlers.swift */; };
@@ -35,6 +36,7 @@
 		0B276E0977B4B2A47DC2D4F6 /* Pods-BasisTest.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BasisTest.debug.xcconfig"; path = "Target Support Files/Pods-BasisTest/Pods-BasisTest.debug.xcconfig"; sourceTree = "<group>"; };
 		9E2BD4387BCF441DF1CB101C /* Pods-BasisTest.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-BasisTest.release.xcconfig"; path = "Target Support Files/Pods-BasisTest/Pods-BasisTest.release.xcconfig"; sourceTree = "<group>"; };
 		B605549B7E3E8B462B163432 /* Pods_BasisTest.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_BasisTest.framework; sourceTree = BUILT_PRODUCTS_DIR; };
+		DC09F78124A6860400E5267F /* CustomView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomView.swift; sourceTree = "<group>"; };
 		DC64485024A6167F00D32E98 /* EventController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EventController.swift; sourceTree = "<group>"; };
 		DC64485424A616A800D32E98 /* UpdateViewProtocol.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UpdateViewProtocol.swift; sourceTree = "<group>"; };
 		DC64485724A616CF00D32E98 /* Handlers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Handlers.swift; sourceTree = "<group>"; };
@@ -179,6 +181,7 @@
 			isa = PBXGroup;
 			children = (
 				DC64487D24A640F800D32E98 /* ListViewController.swift */,
+				DC09F78124A6860400E5267F /* CustomView.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -344,6 +347,7 @@
 				DC9D2BBF24A604C9004219AC /* AppDelegate.swift in Sources */,
 				DC64486724A6172D00D32E98 /* BaseModel.swift in Sources */,
 				DC64486924A6172D00D32E98 /* ModelFacade.swift in Sources */,
+				DC09F78224A6860400E5267F /* CustomView.swift in Sources */,
 				DC64485A24A616CF00D32E98 /* Handlers.swift in Sources */,
 				DC64485124A6167F00D32E98 /* EventController.swift in Sources */,
 				DC64487724A61F7400D32E98 /* ListModel.swift in Sources */,
