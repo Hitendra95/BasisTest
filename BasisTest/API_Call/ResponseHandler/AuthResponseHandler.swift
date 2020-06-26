@@ -7,3 +7,18 @@
 //
 
 import Foundation
+
+class AuthResponseHandler{
+    
+    static let sharedInstanceResponseHandler = AuthResponseHandler()
+    let handler = Handler.handlerSharedInstance
+    private init(){
+        
+    }
+    
+    func getListHandler()->AppHandler{
+        
+        return handler.getHandlers(eventType: NetworkEvents.EVENT_GET_LIST,eventName: NetworkEventsName.EVENT_GET_LIST)
+
+    }
+}

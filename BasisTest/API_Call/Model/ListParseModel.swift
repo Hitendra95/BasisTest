@@ -1,5 +1,5 @@
 //
-//  UserModal.swift
+//  ListParseModel.swift
 //  BasisTest
 //
 //  Created by Hitendra Dubey  on 26/06/20.
@@ -10,13 +10,13 @@ import Foundation
 
 class ListParseModel{
     
-    var list = List()
+    var list = ListModel()
 
-    func parseUser(data: Data)-> UserInfoModal{
+    func parseUser(data: Data)-> ListModel{
         let decoder = JSONDecoder()
         do
         {
-            list = try decoder.decode(List.self, from: data)
+            list = try decoder.decode(ListModel.self, from: data)
             return list
         }
         catch
