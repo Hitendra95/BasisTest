@@ -12,7 +12,7 @@ class ListViewController: UIViewController {
 
     var list : [ListData]?
     let button = UIButton()
-    var currentIndex = 0
+    var currentIndex = 1
     var divisor: CGFloat!
     
     public var cardOversize: CGFloat = 6
@@ -39,17 +39,19 @@ class ListViewController: UIViewController {
     func setUpView()
     {
           //0.61 is the value of 30% in radian
-          divisor = (view.frame.width/2)/0.61
-          view.backgroundColor = UIColor.lightGray
+          divisor = (view.frame.width/2)/0.17 ///0.26 ///0.61
+        view.backgroundColor = UIColor(red: 42/255, green: 101/255, blue: 99/255, alpha: 1)
     }
     
     //MARK: Make Reload Button
     func makeReloadButton()
     {
-        button.setTitle("Reload", for: .normal)
+        button.setTitle("", for: .normal)
+        let image = UIImage(named: "icons8-reset-100")?.withRenderingMode(.alwaysOriginal)
+        button.setImage(image?.withTintColor(.white), for: .normal)
         self.view.addSubview(button)
         button.addTarget(self, action: #selector(reload), for: .touchDown)
-        button.setAnchors(top: view.topAnchor, left: nil, bottom: nil, right: view.rightAnchor, paddingTop: 10, paddingLeft: 0, paddingBottom: 0, paddingRight: 30, height: 50, width: 100)
+        button.setAnchors(top: view.topAnchor, left: nil, bottom: nil, right: view.rightAnchor, paddingTop: 40, paddingLeft: 0, paddingBottom: 0, paddingRight: 30, height: 35, width: 35)
     }
     
     
@@ -66,7 +68,12 @@ class ListViewController: UIViewController {
             self.view.addSubview(card)
             card.tag = i
             currentIndex = i
-            card.addGestureRecognizer(UIPanGestureRecognizer.init(target: self, action: #selector(collectionTapped(_:))))
+            let swipeGetures = setupSwipeGestures(view: card)
+            let panGesture = UIPanGestureRecognizer.init(target: self, action:#selector(self.collectionTapped(_:)))
+            for swipeGesture in swipeGetures {
+                panGesture.require(toFail: swipeGesture)
+            }
+            card.addGestureRecognizer(panGesture)
             card.setAnchors(top: nil, left: self.view.leftAnchor, bottom: nil, right: self.view.rightAnchor, paddingTop: 0, paddingLeft: 22-(CGFloat(CGFloat((count-i))*cardSideWith)), paddingBottom: 0, paddingRight: 22-(CGFloat(CGFloat((count-i))*cardSideWith)), height: 500, width: 0)
             card.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
             card.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: CGFloat((i))*cardOversize).isActive = true
@@ -76,19 +83,63 @@ class ListViewController: UIViewController {
     
     //MARK: Reload button function
     @objc func reload(){
-        view.subviews.forEach({ $0.removeFromSuperview() })
+       
+        //REMOVE ALL CUSTOM VIEWS TO CREATE NEW VIEWS
+        for values in view.subviews
+        {
+            if values.accessibilityIdentifier == "CustomView"
+            {
+                values.removeFromSuperview()
+            }
+        }
         makeView()
     }
     
-    func update()
-    {
+    func update(){
+        currentIndex += 1
+    }
+    
+    func bringPrevious(){
+        print("current index:",currentIndex)
+        guard let lis = list else {return}
+        let count = lis.count
+        currentIndex = currentIndex-1
+        if currentIndex-1 >= 0
+        {
+            let card = getView(viewModel: lis[currentIndex-1], totalCardCount: "\(count)")
+            card.tag = currentIndex
+            //card.addGestureRecognizer(UIPanGestureRecognizer.init(target: self, action: #selector(collectionTapped(_:))))
+            let swipeGetures = setupSwipeGestures(view: card)
+            let panGesture = UIPanGestureRecognizer.init(target: self, action:#selector(self.collectionTapped(_:)))
+            for swipeGesture in swipeGetures {
+                panGesture.require(toFail: swipeGesture)
+            }
+            card.addGestureRecognizer(panGesture)
+            self.view.addSubview(card)
+            card.setAnchors(top: nil, left: self.view.leftAnchor, bottom: nil, right: self.view.rightAnchor, paddingTop: 0, paddingLeft: 22-(CGFloat(CGFloat((count-currentIndex))*cardSideWith)), paddingBottom: 0, paddingRight: 22-(CGFloat(CGFloat((count-currentIndex))*cardSideWith)), height: 500, width: 0)
+            card.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
+            card.centerYAnchor.constraint(equalTo: view.centerYAnchor, constant: CGFloat((currentIndex))*cardOversize).isActive = true
+        }
+    }
+    
+    private func setupSwipeGestures(view: UIView) -> [UISwipeGestureRecognizer] {
+        let swipeUp = UISwipeGestureRecognizer(target: self, action: #selector(self.handleSwipes))
+        let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(self.handleSwipes))
+        
+        swipeUp.direction = .up
+        swipeDown.direction = .down
 
+        view.addGestureRecognizer(swipeUp)
+        view.addGestureRecognizer(swipeDown)
+
+        return [swipeUp, swipeDown]
     }
     
     //MARK: Get Custom View
     func getView(viewModel: ListData,totalCardCount: String)-> UIView{
         
         let card = CustomCardView()
+        card.accessibilityIdentifier = "CustomView"
         card.Text.text = viewModel.text
         card.Tracklabel.text = (viewModel.id ?? "")+"/"+totalCardCount
         return card
@@ -99,8 +150,15 @@ class ListViewController: UIViewController {
 //MARK: Handle all animation part
 extension ListViewController{
     
+    @objc func handleSwipes(gesture: UISwipeGestureRecognizer)
+    {
+            print("ava")
+            bringPrevious()
+    }
+    
     @objc func collectionTapped(_ sender: UIPanGestureRecognizer)
     {
+        print("bca")
         guard let card = sender.view else {return}
         guard let count = list?.count else {return}
         let point = sender.translation(in: view)
@@ -113,14 +171,14 @@ extension ListViewController{
         // handle when gesture ended
         if sender.state == UIGestureRecognizer.State.ended{
             
-            if card.center.x+25 < view.frame.width/2{
+            if card.center.x+100 < view.frame.width/2{
                 UIView.animate(withDuration: 0.2) {
                     card.center = CGPoint(x: card.center.x - self.view.frame.width, y: card.center.y+75)
-                }
+            }
                 card.removeFromSuperview()
                 update()
-                return
-            }else if card.center.x-25 > view.frame.width/2{
+            return
+        }else if card.center.x-100 > view.frame.width/2{
                 UIView.animate(withDuration: 0.2) {
                     card.center = CGPoint(x: card.center.x + self.view.frame.width, y: card.center.y+75)
                 }
@@ -128,8 +186,7 @@ extension ListViewController{
                 update()
                 return
             }
-            else
-            {
+            else{
                 UIView.animate(withDuration: 0.2) {
                     card.center.x = self.view.center.x
                     card.center.y = (self.view.center.y+CGFloat(CGFloat((count-card.tag))*self.cardOversize))
