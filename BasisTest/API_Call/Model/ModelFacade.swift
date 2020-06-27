@@ -8,6 +8,7 @@
 
 import Foundation
 
+//MARK: Get Response In Model
 class ModelFacade{
     static let sharedInstanceModelFacade = ModelFacade()
     

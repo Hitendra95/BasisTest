@@ -47,6 +47,7 @@ class CustomCardView : UIView{
         return lb
     }()
     
+    //MARK: Add views
     override init(frame: CGRect) {
         super.init(frame: frame)
         CardFrameView.addSubview(Tracklabel)
@@ -55,6 +56,7 @@ class CustomCardView : UIView{
         addConstraints()
     }
     
+    //MARK: Add constraints
     fileprivate func addConstraints() {
         CardFrameView.setAnchors(top: topAnchor, left: leftAnchor, bottom: bottomAnchor, right: rightAnchor, paddingTop: 0, paddingLeft: 0, paddingBottom: 0, paddingRight: 0, height: 0, width: 0)
         Tracklabel.setAnchors(top: CardFrameView.topAnchor, left: nil, bottom: nil, right: CardFrameView.rightAnchor, paddingTop: 20, paddingLeft: 0, paddingBottom: 0, paddingRight: 20, height: 22, width: 0)

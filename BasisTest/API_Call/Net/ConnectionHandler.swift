@@ -14,6 +14,7 @@ class ConnectionHandler{
     
     var errorMessage : String = ""
     
+    //MARK: Check if net is connected
     func isConnectedToNetwork() -> Bool {
             
         var isReachable = false
@@ -32,16 +33,18 @@ class ConnectionHandler{
         return isReachable
     }
     
+    //MARK: MAke API call
     func makeHttpRequest(url: String, reqtype: HTTPMethod,handler:AppHandler, retrycount:Int){
         if retrycount > 0{
             AF.request(url, method: reqtype).responseString {
                 response in
                 switch response.result {
+                //Handle success
                 case .success:
                     var data = response.value ?? ""
                     data.remove(at: data.startIndex)
                     print(data)
-                    if let resultDict = self.convertStringToDict(string: data){ //as? Dictionary<String,AnyObject>{//data.removeSubrange(Range(string: data, lowerBound: 0, upperBound:1)) {
+                    if let resultDict = self.convertStringToDict(string: data){
                     if let statusCode = resultDict[Constants.KEY_STATUS_CODE] {
                         let statuscode = statusCode as! Int
                         if statuscode == 400 || statuscode == 404{
@@ -60,10 +63,8 @@ class ConnectionHandler{
                         
                     }
                     }
-//                    }else if let resultDict = response.value as? Array<AnyObject>{
-//                        handler.handleMessage(data: resultDict)
-//                    }
                     break
+                 //handle failure
                 case .failure(let error):
                     print(error)
                     self.errorMessage = error.localizedDescription
@@ -80,6 +81,7 @@ class ConnectionHandler{
         }
     }
     
+    //MARK: Convert json string to dictionary
     private func convertStringToDict(string: String) -> Dictionary<String,AnyObject>?
     {
         let data = string.data(using: .utf8)!

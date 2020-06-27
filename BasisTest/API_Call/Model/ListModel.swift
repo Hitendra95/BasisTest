@@ -8,6 +8,7 @@
 
 import Foundation
 
+//MAKR: Codeable model of list
 struct ListModel: Codable {
     var data: [ListData]?
 }

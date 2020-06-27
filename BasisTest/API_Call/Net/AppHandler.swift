@@ -8,6 +8,7 @@
 
 import Foundation
 
+//MARK: All Handler handled cases
 protocol AppHandler {
     func handleMessage(data: Data)
     func handleMessage(data:Array<AnyObject>)

@@ -19,6 +19,7 @@ class Handler{
     }
 }
 
+//MARK: Event Handler class handle all the events we receive from api call from success to error
 class EventHanlders: AppHandler
 {
     let eventId : Int!
