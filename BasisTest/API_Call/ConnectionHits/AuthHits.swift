@@ -9,6 +9,7 @@
 import Foundation
 import Alamofire
 
+//MARK: Make api call and pass the handler of that api call
 class AuthHits{
     func GetList(handler:AppHandler)
     {

@@ -16,6 +16,7 @@ class EventsController{
         
     }
     
+    //MARK: handler of particular event
     func handleEvent(eventid : Int) {
         switch eventid {
         case NetworkEvents.EVENT_GET_LIST:

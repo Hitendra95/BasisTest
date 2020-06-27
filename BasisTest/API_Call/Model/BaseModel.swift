@@ -7,6 +7,8 @@
 //
 
 import Foundation
+
+//MARK: Each view have to register itself to notify any response and should be unregister when moves out
 class BaseModel{
     static let sharedInstanceBaseModel = BaseModel()
     var registerdViews : [UpdateViewProtocol]

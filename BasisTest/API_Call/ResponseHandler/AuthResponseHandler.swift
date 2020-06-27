@@ -16,6 +16,7 @@ class AuthResponseHandler{
         
     }
     
+    //MARK: Get Handler of particlur API
     func getListHandler()->AppHandler{
         
         return handler.getHandlers(eventType: NetworkEvents.EVENT_GET_LIST,eventName: NetworkEventsName.EVENT_GET_LIST)

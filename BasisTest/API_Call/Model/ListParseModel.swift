@@ -8,6 +8,7 @@
 
 import Foundation
 
+//MARK: Parser to parse API IN Codelable
 class ListParseModel{
     
     var list = ListModel()

@@ -99,6 +99,7 @@ class ListViewController: UIViewController {
         currentIndex += 1
     }
     
+    //MARK: To Fetch previous card
     func bringPrevious(){
         print("current index:",currentIndex)
         guard let lis = list else {return}
@@ -108,7 +109,6 @@ class ListViewController: UIViewController {
         {
             let card = getView(viewModel: lis[currentIndex-1], totalCardCount: "\(count)")
             card.tag = currentIndex
-            //card.addGestureRecognizer(UIPanGestureRecognizer.init(target: self, action: #selector(collectionTapped(_:))))
             let swipeGetures = setupSwipeGestures(view: card)
             let panGesture = UIPanGestureRecognizer.init(target: self, action:#selector(self.collectionTapped(_:)))
             for swipeGesture in swipeGetures {
@@ -122,6 +122,7 @@ class ListViewController: UIViewController {
         }
     }
     
+    // Add Swipe Gesture
     private func setupSwipeGestures(view: UIView) -> [UISwipeGestureRecognizer] {
         let swipeUp = UISwipeGestureRecognizer(target: self, action: #selector(self.handleSwipes))
         let swipeDown = UISwipeGestureRecognizer(target: self, action: #selector(self.handleSwipes))
